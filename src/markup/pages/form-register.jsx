@@ -1,7 +1,6 @@
 import { Formik, Form } from 'formik';
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-
 import * as Yup from 'yup'
 import { register } from '../../api';
 import instance from '../../axiosInstance';
@@ -36,8 +35,19 @@ const validationSchema = Yup.object().shape({
 	// gender: Yup.string().oneOf(["Male, Female"]).required('Required'),
 	gender: Yup.string().required('Required'),
 	userName: Yup.string().required('Required'),
-	password: Yup.string().required('Required'),
-	confirmPassword: Yup.string().required('Required')
+	password: Yup.string()
+      .required("Please Enter your password")
+      .matches(
+        /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
+        "Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and one special case Character"
+  ),
+  confirmPassword: Yup.string().test(
+        "passwords-match",
+        "Passwords must match",
+        function (value) {
+          return this.parent.password === value;
+        }
+  )
 })
 
 

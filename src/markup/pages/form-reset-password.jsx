@@ -6,13 +6,26 @@ import instance from '../../axiosInstance';
 
 // Import Images
 import logo from "../../images/logo.png";
-import { forgetPassword } from '../../api';
 import { TextInput } from '../common/Input';
+import { resetPassword } from '../../api';
 
 const validationSchema = Yup.object().shape({
 	email: Yup.string()
 	.email("Enter a valid email address")
-	.required("Required")
+	.required("Required"),
+    password: Yup.string()
+      .required("Please Enter your password")
+      .matches(
+        /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
+        "Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and one special case Character"
+  ),
+  confirmPassword: Yup.string().test(
+        "passwords-match",
+        "Passwords must match",
+        function (value) {
+          return this.parent.password === value;
+        }
+  )
 })
 
 const FormLogin = () => {
@@ -20,12 +33,14 @@ const FormLogin = () => {
 	const [error, setError] = useState(null)
 
 	const initialValues = {
-		email: ""
+		email: "",
+        password: "",
+        confirmPassword: ""
 	}
 
-	const forgetPasswordFn = async (values, errorcb, setIsLoading) => {
+	const resetPasswordFn = async (values, errorcb, setIsLoading) => {
 		try {
-			let response = await instance.post(forgetPassword, {...values})
+			let response = await instance.post(resetPassword, {...values})
 			if(response.status === 200 || response.status === 204 || response.status === 201 ) {
 				setIsLoading(false);
 			}
@@ -41,7 +56,7 @@ const FormLogin = () => {
 			<Formik
 			initialValues={initialValues}
 			validationSchema={validationSchema}
-			onSubmit={(values, setSubmitting) => forgetPasswordFn(values, setError, setSubmitting)}>
+			onSubmit={(values, setSubmitting) => resetPasswordFn(values, setError, setSubmitting)}>
 				{({isSubmitting}) => (<Form>
 				<div className="section-area account-wraper2">
 					<div className="container">
@@ -54,10 +69,26 @@ const FormLogin = () => {
 									
 										<div className="form-group">
 											<TextInput 
+											type="email" 
+											className="form-control" 
+											placeholder="Email"
+											name="email"
+											/>
+										</div>
+										<div className="form-group">
+											<TextInput 
 											type="password" 
 											className="form-control" 
 											placeholder="Password"
-											name="email"
+											name="password"
+											/>
+										</div>
+										<div className="form-group">
+											<TextInput 
+											type="password" 
+											className="form-control" 
+											placeholder="Confirm Password"
+											name="confirmPassword"
 											/>
 										</div>
 																

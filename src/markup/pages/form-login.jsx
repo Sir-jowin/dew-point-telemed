@@ -15,8 +15,11 @@ const validationSchema = Yup.object().shape({
 	.email("Enter a valid email address")
 	.required("Required"),
 	password: Yup.string()
-	.min(6, "Password too short")
-	.required("Required")
+      .required("Please Enter your password")
+      .matches(
+        /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
+        "Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and one special case Character"
+  )
 })
 
 const FormLogin = () => {
@@ -78,7 +81,8 @@ const LoginFn = async (values, errorcb, setIsLoading) => {
 											 className="btn mb-30 btn-lg btn-primary w-100"
 											 disabled={isSubmitting}>{!isSubmitting ? "Login" : "Submitting..."}
 											 </button>
-											<Link to="/form-forget-password" data-toggle="tab">Forgot Password</Link>
+											<div><Link to="/form-forget-password" data-toggle="tab">Forgot Password</Link></div>
+											<div><Link to="/form-reset-password" data-toggle="tab">Reset Password</Link></div>
 										</div>
 										<div className="text-center mt-40">
 											<p className="mt-0">Dont have any account?</p>

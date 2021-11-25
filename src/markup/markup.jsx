@@ -14,6 +14,7 @@ import ServiceDetail from './pages/service-detail';
 import FormLogin from './pages/form-login';
 import FormRegister from './pages/form-register';
 import FormForgetPassword from './pages/form-forget-password';
+import FormResetPassword from './pages/form-reset-password';
 import Faq from './pages/faq';
 import ContactUs from './pages/contact-us';
 import Booking from './pages/booking';
@@ -37,6 +38,7 @@ class Markup extends Component{
 						<Route path='/form-login' exact component={FormLogin} />
 						<Route path='/form-register' exact component={FormRegister} />
 						<Route path='/form-forget-password' exact component={FormForgetPassword} />
+						<Route path='/form-reset-password' exact component={FormResetPassword} />
 						<Route path='/faq' exact component={Faq} />
 						<Route path='/contact-us' exact component={ContactUs} />
 						<Route path='/booking' exact component={Booking} />
