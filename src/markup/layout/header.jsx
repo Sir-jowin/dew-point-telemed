@@ -117,6 +117,8 @@ class Header extends Component{
 											</ul>
 										</li>
 										<li><Link to="/contact-us">Contact Us</Link></li>
+										<li><Link to="/form-login"><span>Login / Register</span></Link></li>
+
 									</ul>
 									<ul className="social-media">
 										<li><a target="_blank" rel="noreferrer" href="https://www.facebook.com/" className="btn btn-primary"><i className="fab fa-facebook-f"></i></a></li>
