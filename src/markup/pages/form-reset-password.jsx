@@ -31,6 +31,7 @@ const validationSchema = Yup.object().shape({
 const FormLogin = () => {
 
 	const [error, setError] = useState(null)
+	const [isLoading, setIsLoading] = useState(false)
 
 	const initialValues = {
 		email: "",
@@ -39,6 +40,8 @@ const FormLogin = () => {
 	}
 
 	const resetPasswordFn = async (values, errorcb, setIsLoading) => {
+		setIsLoading(true);
+		errorcb(null);
 		try {
 			let response = await instance.post(resetPassword, {...values})
 			if(response.status === 200 || response.status === 204 || response.status === 201 ) {
@@ -56,8 +59,10 @@ const FormLogin = () => {
 			<Formik
 			initialValues={initialValues}
 			validationSchema={validationSchema}
-			onSubmit={(values, setSubmitting) => resetPasswordFn(values, setError, setSubmitting)}>
-				{({isSubmitting}) => (<Form>
+			onSubmit={(values) => {
+					resetPasswordFn(values, setError, setIsLoading)
+					}}>
+				<Form>
 				<div className="section-area account-wraper2">
 					<div className="container">
 						<div className="row justify-content-center">
@@ -66,7 +71,7 @@ const FormLogin = () => {
 									<div className="logo">
 										<img src={logo} alt=""/>
 									</div>
-									
+									{error && <div>{error}</div>}
 										<div className="form-group">
 											<TextInput 
 											type="email" 
@@ -96,7 +101,7 @@ const FormLogin = () => {
 											<button 
 											type="submit" 
 											className="btn btn-primary w-100 radius-xl"
-											disabled={isSubmitting}>{!isSubmitting ? "Submit" : "Submitting..."}
+											disabled={isLoading}>{!isLoading ? "Submit" : "Submitting..."}
 											</button>
 										</div>													
 										<div className="text-center mt-40">						
@@ -109,7 +114,7 @@ const FormLogin = () => {
 						</div>					
 					</div>
 				</div>
-				</Form>)}
+				</Form>
 				</Formik>
 			</>
 		);

@@ -1,5 +1,6 @@
 import { Formik, Form } from 'formik';
 import React, { useState } from 'react';
+import { createBootstrapComponent } from 'react-bootstrap/esm/ThemeProvider';
 import { Link } from 'react-router-dom';
 import * as Yup from 'yup'
 import { login } from '../../api';
@@ -24,18 +25,22 @@ const validationSchema = Yup.object().shape({
 
 const FormLogin = () => {
 	const [error, setError] = useState(null)
-
+	const [isLoading, setIsLoading] = useState(false)
+	
 	const initialValues = {
 		email: "",
 		password: ""
 	}
 
 const LoginFn = async (values, errorcb, setIsLoading) => {
+	setIsLoading(true);
+	errorcb(null);
 	try {
 		let response = await instance.post(login, {...values})
 
 		if(response.status === 200 || response.status === 204 || response.status === 201) {
 			setIsLoading(false)
+			createBootstrapComponent();
 		}
 	} catch(e) {
 		errorcb("We encountered an error login");
@@ -48,8 +53,12 @@ const LoginFn = async (values, errorcb, setIsLoading) => {
 			<Formik
 				initialValues={initialValues}
 				validationSchema={validationSchema}
-				onSubmit={(values, setSubmitting) => LoginFn(values, setError, setSubmitting)}>
-					{({isSubmitting}) => (<Form>
+				onSubmit={(values) => {
+					LoginFn(values, setError, setIsLoading)
+				}}
+				>
+					
+					<Form>
 				<div className="section-area account-wraper2">
 					<div className="container">
 						<div className="row justify-content-center">
@@ -58,7 +67,7 @@ const LoginFn = async (values, errorcb, setIsLoading) => {
 									<div className="logo">
 										<img src={logo} alt=""/>
 									</div>
-									
+									{error && <div>{error}</div>}
 										<div className="form-group">
 											<TextInput 
 											type="email" 
@@ -79,7 +88,7 @@ const LoginFn = async (values, errorcb, setIsLoading) => {
 											<button
 											 type="submit" 
 											 className="btn mb-30 btn-lg btn-primary w-100"
-											 disabled={isSubmitting}>{!isSubmitting ? "Login" : "Submitting..."}
+											 disabled={isLoading}>{!isLoading ? "Login" : "Submitting..."}
 											 </button>
 											<div><Link to="/form-forget-password" data-toggle="tab">Forgot Password</Link></div>
 											<div><Link to="/form-reset-password" data-toggle="tab">Reset Password</Link></div>
@@ -94,7 +103,7 @@ const LoginFn = async (values, errorcb, setIsLoading) => {
 						</div>					
 					</div>
 				</div>
-				</Form>)}
+				</Form>
 				</Formik>
 			</>
 		);

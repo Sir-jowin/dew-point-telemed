@@ -3,6 +3,7 @@ import { useField } from "formik";
 // import { CircularLoading } from "../Loading/CircularLoading";
 // import CustomSelect from "../PersonalInformation/CustomSelect";
 import styled from 'styled-components'
+import CustomSelect from './CustomSelect';
 
 const ErrorContainer = styled.div`
   text-align: start;
@@ -27,28 +28,32 @@ export const TextInput = ({ ...props }) => {
 };
 
 
-// export const SelectInput = ({ label, labelClass, ...props }) => {
-//     const [field, meta, helpers] = useField(props);
+export const SelectInput = ({ setCurrent, ...props }) => {
+    const [field, meta, helpers] = useField(props);
 
-//     props.className = meta.touched && meta.error ? 
-//     props.className + " errorline": 
-//     props.className;
+    props.className = meta.touched && meta.error ? 
+    props.className + " errorline": 
+    props.className;
  
-//     return (
-//       <>
-//         <label htmlFor={props.id || props.name} className={labelClass}>{label}</label>
-//         <CustomSelect 
-//           {...field} 
-//           {...props}
-//           value={props.options ? props.options.find(option => option.value === field.value): ""}
-//           onChange={option => helpers.setValue(option.value)}
-//         />
-//          <div className="formik-error">
-//            {meta.touched && meta.error ? meta.error : null}
-//          </div>
-//       </>
-//     );
-// }
+    return (
+      <>
+        {/* <label htmlFor={props.id || props.name} className={labelClass}>{label}</label> */}
+        <CustomSelect 
+          {...field}
+          {...props}
+          value={props.options ? props.options.find(option => option.value === field.value): ""}
+          onChange={option => {
+            helpers.setValue(option.value)
+            if(setCurrent) 
+             setCurrent(option.value)
+          }}
+        />
+         <div className="formik-error">
+           {meta.touched && meta.error ? meta.error : null}
+         </div>
+      </>
+    );
+}
 
 // export const SubmitInput = ({ loadingText, isLoading, ...props }) => {
 //   return (

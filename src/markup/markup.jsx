@@ -14,6 +14,7 @@ import ServiceDetail from './pages/service-detail';
 import FormLogin from './pages/form-login';
 import FormRegister from './pages/form-register';
 import FormForgetPassword from './pages/form-forget-password';
+import FormRegConfirm from './pages/form-reg-confirm';
 import FormResetPassword from './pages/form-reset-password';
 import Faq from './pages/faq';
 import ContactUs from './pages/contact-us';
@@ -21,6 +22,7 @@ import Booking from './pages/booking';
 import BlogGrid from './pages/blog-grid';
 import BlogDetails from './pages/blog-details';
 import Error from './pages/error-404';
+import ConfirmEmail from './pages/confirmEmail';
 
 class Markup extends Component{
 	render(){
@@ -37,6 +39,7 @@ class Markup extends Component{
 						<Route path='/service-detail' exact component={ServiceDetail} />
 						<Route path='/form-login' exact component={FormLogin} />
 						<Route path='/form-register' exact component={FormRegister} />
+						<Route path='/form-reg-confirm' exact component={FormRegConfirm} />
 						<Route path='/form-forget-password' exact component={FormForgetPassword} />
 						<Route path='/form-reset-password' exact component={FormResetPassword} />
 						<Route path='/faq' exact component={Faq} />
@@ -44,6 +47,7 @@ class Markup extends Component{
 						<Route path='/booking' exact component={Booking} />
 						<Route path='/blog-grid' exact component={BlogGrid} />
 						<Route path='/blog-details' exact component={BlogDetails} />
+						<Route path='/confirm' exact component={ConfirmEmail} />
 						<Route component={Error} />
 						
 					</Switch>
