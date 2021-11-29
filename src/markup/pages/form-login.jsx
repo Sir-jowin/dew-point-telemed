@@ -12,7 +12,7 @@ import { TextInput } from '../common/Input';
 
 
 const validationSchema = Yup.object().shape({
-	email: Yup.string()
+	emailOrUserName: Yup.string()
 	.email("Enter a valid email address")
 	.required("Required"),
 	password: Yup.string()
@@ -28,7 +28,7 @@ const FormLogin = () => {
 	const [isLoading, setIsLoading] = useState(false)
 	
 	const initialValues = {
-		email: "",
+		emailOrUserName: "",
 		password: ""
 	}
 
@@ -42,9 +42,14 @@ const LoginFn = async (values, errorcb, setIsLoading) => {
 			setIsLoading(false)
 			createBootstrapComponent();
 		}
-	} catch(e) {
-		errorcb("We encountered an error login");
+	} catch(error) {
 		setIsLoading(false);
+		if(error.response) {
+			errorcb(error.response.data.Message);
+		
+			return;
+		}
+		errorcb("We encountered an error login");
 	}
 }
 	
@@ -70,25 +75,25 @@ const LoginFn = async (values, errorcb, setIsLoading) => {
 									{error && <div>{error}</div>}
 										<div className="form-group">
 											<TextInput 
-											type="email" 
+											type="email"
 											className="form-control" 
 											placeholder="Email"
-											name="email"
-											/>
+											name="emailOrUserName"
+										/>
 										</div>
 										<div className="form-group">
-											<input 
-											type="password" 
-											className="form-control" 
-											placeholder="Password"
-											name="password"
+											<TextInput 
+												type="password" 
+												className="form-control" 
+												placeholder="Password"
+												name="password"
 											/>
 										</div>
 										<div className="form-group">
 											<button
-											 type="submit" 
-											 className="btn mb-30 btn-lg btn-primary w-100"
-											 disabled={isLoading}>{!isLoading ? "Login" : "Submitting..."}
+												type="submit" 
+												className="btn mb-30 btn-lg btn-primary w-100"
+												disabled={isLoading}>{!isLoading ? "Login" : "Submitting..."}
 											 </button>
 											<div><Link to="/form-forget-password" data-toggle="tab">Forgot Password</Link></div>
 											<div><Link to="/form-reset-password" data-toggle="tab">Reset Password</Link></div>

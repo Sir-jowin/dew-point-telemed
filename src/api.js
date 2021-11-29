@@ -2,7 +2,7 @@ export const baseURL = 'https://dewpointwebservices.azurewebsites.net/api/'
 
 export const register = '/Account/registerDoctorAsync'
 
-export const login = 'Account/authenticate'
+export const login = '/Account/Login'
 
 export const forgetPassword = '/Account/forgot-password'
 
