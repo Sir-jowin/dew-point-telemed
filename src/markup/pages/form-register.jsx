@@ -11,7 +11,7 @@ import { SelectInput, TextInput } from '../common/Input';
 import '../../css/register.css';
 
 
-const configureOptions = options => {
+const categoryOptions = options => {
 	let arr = []
 	options.map(o => {
 		arr.push({value: o.practiceCategoryId, label: o.practiceCategoryName})
@@ -19,6 +19,16 @@ const configureOptions = options => {
 
 	return arr;
 }
+
+const descriptionOptions = options => {
+	let arr = []
+	options.map(o => {
+		arr.push({value: o.practiceDescriptionId, label: o.practiceDescriptionName})
+	})
+
+	return arr;
+}
+
 const countryOptions = options => {
 	let arr = []
 	options.map(o => {
@@ -59,6 +69,7 @@ const validationSchema = Yup.object().shape({
 	stateOfResidenceId: Yup.string().required('Required'),
 	residentialAddress: Yup.string().required('Required'),
 	practiceDescriptionId: Yup.string().required('Required'),
+	categoryId: Yup.string().required('Required'),
 	gender: Yup.string().required('Required'),
 	userName: Yup.string().min(6, "user name must contain at least 6 characters.").required('Required'),
 	password: Yup.string()
@@ -129,8 +140,10 @@ const FormLogin = () => {
 	const [categories, setCategories] = useState([])
 	const [countries, setCountries] = useState([])
 	const [states, setStates] = useState([])
+	const [descriptions, setDescriptions] = useState([])
 
 	const getCategories = () => instanceGet('/Shared/PracticeCategory', setCategories, setError)
+	const getDescription = () => instanceGet('/Shared/PracticeDescription', setDescriptions, setError)
 	const getCountries = () => instanceGet('/Shared/GetAllCountries', setCountries, setError);
 	const getCurrentStates = id => instanceGet(`/Shared/GetStatesByCountryId/${id}`, setStates, setError);
 
@@ -144,6 +157,7 @@ const FormLogin = () => {
 	useEffect(() => {
 		getCategories();
 		getCountries();
+		getDescription()
 	}, [])
 	
 
@@ -239,19 +253,28 @@ const FormLogin = () => {
 											<div className="form-group col-md-6">
 												<SelectInput 
 													className="form-control" 
-													options={configureOptions(categories)}
-													placeholder="Practice Description"
+													options={descriptionOptions(descriptions)}
+													placeholder="Practice DSP"
 													name="practiceDescriptionId"
 												/>
 											</div>
 											
+											<div className="form-group col-md-6">
+												<SelectInput 
+													className="form-control" 
+													options={categoryOptions(categories)}
+													placeholder="Practice CAT"
+													name="practiceCategoryId"
+												/>
+											</div>
+
 											<div className="form-group col-md-6">
 												<TextInput 
 													type="text" 
 													className="form-control" 
 													placeholder="Username"
 													name="userName"
-													// autoComplete={false}
+													autoComplete={false}
 												/>
 											</div>
 											<div className="form-group col-md-6">
